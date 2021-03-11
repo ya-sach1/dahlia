@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { Configuration } from '../src';
 
-const config = new Configuration(resolve(process.cwd(), 'tests', 'config.yaml'));
+const config = new Configuration(resolve(__dirname, 'config', 'config.yaml'));
 
 test('Gets string correctly', () => {
 	expect(config.get('config.foo')).toEqual('bar');

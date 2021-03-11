@@ -1,44 +1,71 @@
+import { parse as parseYAML, stringify as stringifyYAML } from 'yaml';
 import { readFileSync, statSync, writeFileSync } from 'fs';
-import { parse, stringify } from 'yaml';
 import { get, has, set, delete as dotDelete } from 'dot-prop';
+import { extname } from 'path';
+
+type AvaiableTypes = 'json' | 'yml' | 'yaml';
+
+class Parser {
+	public parse: (...args: any[]) => any;
+	public stringify: (...args: any[]) => any;
+
+	public constructor(private readonly type: string | AvaiableTypes) {
+		switch (type) {
+			case 'yaml':
+				this.parse = parseYAML;
+				this.stringify = stringifyYAML;
+				break;
+			case 'yml':
+				this.parse = parseYAML;
+				this.stringify = stringifyYAML;
+				break;
+			case 'json':
+				this.parse = JSON.parse;
+				this.stringify = JSON.stringify;
+				break;
+			default:
+				this.parse = JSON.parse;
+				this.stringify = JSON.stringify;
+				break;
+		}
+	}
+}
 
 export class Configuration {
-	private path: string;
 	private parsed: Record<string, any> = {};
+	private parser: Parser;
 
-	public constructor(path: string) {
-		if (!statSync(path))
-			throw new Error("Couldn't parse the config file; is the path correct? does the file exist?");
+	public constructor(private readonly path: string, type?: string | AvaiableTypes) {
+		if (!statSync(path)) throw new Error("Couldn't parse the config file; is the path correct? does the file exist?");
 
-		this.path = path;
+		this.parser = new Parser(type ?? extname(path).slice(1));
 		this.parse();
 	}
 
-	private parse = (): void => (this.parsed = parse(readFileSync(this.path, { encoding: 'utf-8' })));
-
-	public get = <T>(path: string, defaultValue?: T): T | undefined => get<T>(this.parsed, path) ?? defaultValue;
-	public has = (path: string): boolean => has(this.parsed, path);
-	public set = (path: string, value: any): void => {
-		writeFileSync(
-			this.path,
-			stringify(set(this.parsed, path, value), {
-				indent: 4,
-			}),
-		);
-
-		this.parse();
+	private parse = (): void => {
+		return (this.parsed = this.parser.parse(readFileSync(this.path, { encoding: 'utf-8' })));
 	};
 
-	public delete = (path: string): void => {
-		dotDelete(this.parsed, path);
+	public get = <T>(path: string, defaultValue?: T): T | undefined => {
+		return get<T>(this.parsed, path) ?? defaultValue;
+	};
+	
+	public has = (path: string): boolean => {
+		return has(this.parsed, path);
+	};
 
-		writeFileSync(
-			this.path,
-			stringify(this.parsed, {
-				indent: 4,
-			}),
-		);
+	public set = (path: string, value: unknown): this => {
+		writeFileSync(this.path, this.parser.stringify(set(this.parsed, path, value)));
 
 		this.parse();
+		return this;
+	};
+
+	public delete = (path: string): this => {
+		dotDelete(this.parsed, path);
+		writeFileSync(this.path, this.parser.stringify(this.parsed));
+
+		this.parse();
+		return this;
 	};
 }
