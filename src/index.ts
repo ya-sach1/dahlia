@@ -6,10 +6,10 @@ import { extname } from 'path';
 type AvaiableTypes = 'json' | 'yml' | 'yaml';
 
 class Parser {
-	public parse: (...args: any[]) => any;
-	public stringify: (...args: any[]) => any;
+	public parse: (...args: any[]) => Record<string, any>;
+	public stringify: (...args: any[]) => string;
 
-	public constructor(private readonly type: string | AvaiableTypes) {
+	public constructor(type: string | AvaiableTypes) {
 		switch (type) {
 			case 'yaml':
 				this.parse = parseYAML;
@@ -42,14 +42,16 @@ export class Configuration {
 		this.parse();
 	}
 
+	// I don't feel like ruining code-style just to return directly with arrow functions
+
 	private parse = (): void => {
-		return (this.parsed = this.parser.parse(readFileSync(this.path, { encoding: 'utf-8' })));
+		this.parsed = this.parser.parse(readFileSync(this.path, { encoding: 'utf-8' }));
 	};
 
-	public get = <T>(path: string, defaultValue?: T): T | undefined => {
+	public get<T>(path: string, defaultValue?: T): T | undefined {
 		return get<T>(this.parsed, path) ?? defaultValue;
 	};
-	
+
 	public has = (path: string): boolean => {
 		return has(this.parsed, path);
 	};

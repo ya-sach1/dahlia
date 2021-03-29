@@ -1,6 +1,6 @@
 {
 	"name": "@sach1/dahlia",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"main": "build/index.js",
 	"author": "ya-sach1",
 	"license": "GPL-2.0-only",
