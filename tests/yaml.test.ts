@@ -20,7 +20,7 @@ test('Gets array correctly', () => {
 });
 
 test('Has correctly', () => {
-	expect(config.has('foo')).toEqual(false);
+	expect(config.has('config.foo')).toEqual(true);
 });
 
 test('Sets correctly', () => {

@@ -9,7 +9,6 @@
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"alwaysStrict": true,
-		"strict": true,
 		"outDir": "build",
 		"resolveJsonModule": true,
 		"sourceMap": false,
