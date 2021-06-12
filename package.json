@@ -22,7 +22,7 @@
 		"package.json",
 		"README.md",
 		"LICENSE"
-	]
+	],
 	"dependencies": {
 		"yaml": "^1.10.0"
 	},
