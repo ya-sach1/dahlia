@@ -18,7 +18,8 @@
 		"documentation": "typedoc"
 	},
 	"files": [
-		"dist/**/*",
+		"build/**/*",
+    "!build/tsconfig.tsbuildinfo",
 		"package.json",
 		"README.md",
 		"LICENSE"
