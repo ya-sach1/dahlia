@@ -19,7 +19,7 @@
 	},
 	"files": [
 		"build/**/*",
-    "!build/tsconfig.tsbuildinfo",
+    		"!build/tsconfig.tsbuildinfo",
 		"package.json",
 		"README.md",
 		"LICENSE"
