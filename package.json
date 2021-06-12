@@ -17,13 +17,6 @@
 		"format:fix": "yarn run --silent format -w --loglevel silent && echo -e '\\033[32mFormatted.'",
 		"documentation": "typedoc"
 	},
-	"files": [
-		"build/**/*",
-    		"!build/tsconfig.tsbuildinfo",
-		"package.json",
-		"README.md",
-		"LICENSE"
-	],
 	"dependencies": {
 		"yaml": "^1.10.0"
 	},
