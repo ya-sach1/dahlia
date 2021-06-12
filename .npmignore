@@ -1,9 +1,33 @@
+# Github
+.github/
+
+# Editor/IDE Configurations
+.vscode/
+.idea/
+
+# Source Files
+src/
+
+# Compilation Artifacts
+build/tsconfig.tsbuildinfo
+
+# Documentation
+docs/
+
+# Installed Modules
 node_modules
-.github
-.vscode
-documentation
+
+# Tests
+tests/
+
+# Configuration Files
 .eslintignore
-.eslintrc.js
-.gitignore
 .prettierrc.yaml
+.eslintrc.*
+.gitignore
+*.config.js
+tsconfig.json
 typedoc.json
+
+# Yarn 
+yarn.lock
